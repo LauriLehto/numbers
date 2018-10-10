@@ -45,6 +45,9 @@ class HomeScreen extends Component {
             Favorite Number
           </Text>
         </TouchableOpacity>
+        <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Quiz')}}>
+          <Text>History Quiz</Text>
+        </TouchableOpacity>
         <Switch
           trackColor={{ false: "#114511", true: "#F5FCFF" }}
           onValueChange={value => this.setState({ toggled: value })}
