@@ -27,11 +27,9 @@ export default class App extends Component {
     const date = new Date()
     const day = date.getUTCDate()
     const month = date.getUTCMonth()+1
-    const year = date.getUTCYear()
     let url
 
     url = `http://numbersapi.com/${month}/${day}/date?json`
-  
     
     if(url){
       fetch(url)
