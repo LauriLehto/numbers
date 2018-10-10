@@ -6,51 +6,61 @@
  */
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, ActivityIndicator } from 'react-native';
-
-class Question extends Component {
-  
-  render() {
-    let {text} = this.props.data
-    return <Text style={this.props.style}>{text}</Text>
-  }
-}
+import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
 
 export default class App extends Component {
   state= {
-    data:{},
+    data:[],
     date:9,
-    month:10
+    month:10,
+    done: false
   }
 
   resToState() {
-    const date = new Date()
-    const day = date.getUTCDate()
-    const month = date.getUTCMonth()+1
-    const year = date.getUTCYear()
-    let url, url1
-
-    url1 = `http://numbersapi.com/${month}/${day}/date?json`
-    url = `http://numbersapi.com/`
     
-    if(url){
-      fetch(url)
-      .then(response => response.json())
-      .catch(err => console.warn('fetch error'+ err))
-      .then(json => {this.setState({data:json})})
-      .catch(err => console.warn('json not loaded'+err))
+    const url = `http://numbersapi.com/random/year?json`
+    let i = 3
+
+    let intFetch = setInterval(()=>{
+      if(url){
+        fetch(url)
+        .then(response => response.json())
+        .catch(err => console.warn('fetch error'+ err))
+        .then(json => {
+          this.setState(prev=>{
+          const data = prev.data.concat(json)
+          return { data: data, date: this.state.date, month: this.state.month, done:false }
+        })})
+        .catch(err => console.warn('json not loaded'+err))
       }
+      i--
+      if(!i){
+        this.setState({ done: true })
+        clearInterval(intFetch)
+      }
+    },1000)
+    
   }
 
   componentDidMount() {
     this.resToState()
   }
 
+  renderQuestions() {
+    return this.props.data.map(obj => {
+       return <Text style={this.props.style}>Keys</Text>
+     }) 
+   }
+
   render() {
     return (
-      <View style={styles.container}>
-          {this.state.data ? <Question style={styles.welcome} data={this.state.data}/> : <ActivityIndicator />}
-      </View>
+      <FlatList 
+        style={styles.container}
+        keyExtractor={}
+      >
+      <Text>Tekstiä</Text>
+          { this.state.done ? {renderQuestions} : <ActivityIndicator />}
+      </FlatList>
     );
   }
 }
