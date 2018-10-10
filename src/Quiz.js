@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, {Component} from 'react';
 import { StyleSheet, Text, Button, View, ActivityIndicator, FlatList } from 'react-native';
 
@@ -14,14 +7,22 @@ export default class Quiz extends Component {
   static navigationOptions = {
     title :'History Quiz'
   }
+  
   state= {
     data:[],
     date:9,
-    month:10
+    month:10,
+    score:''
+  }
+
+  setScore = (score) => {
+    this.setState({score})
+    this.setState({data:[]})
+    this.resToState()
   }
 
   resToState() {
-    
+    this.set
     const url = `http://numbersapi.com/random/year?json`
     let i = 3
 
@@ -38,8 +39,7 @@ export default class Quiz extends Component {
         .catch(err => console.warn('json not loaded'+err))
       }
       i--
-    }
-    
+    } 
   }
 
   componentDidMount() {
@@ -47,7 +47,7 @@ export default class Quiz extends Component {
   }
 
   renderQuestion({item}) {
-    const { text, number } = item
+    const { text } = item
     const array = text.split('is the year that')
     const year = array[0]
     let newText = array[1].trim()
@@ -56,28 +56,23 @@ export default class Quiz extends Component {
       newText=newText.split('(')[0]
     }
     newText= newText.charAt(0).toUpperCase()+newText.substr(1)
-    
-    return <Text style={styles.slider}>{newText}{year}</Text>
-   }
+
+    return <Text style={styles.slider}>{newText}</Text>
+  }
 
   render() {
     return (
       <View style={styles.container}>
         <View style={styles.header}>
           <Text style={styles.text}>Organize three world events in the right order</Text>
+          <Text style={styles.text}>{this.state.score}</Text>
         </View>
         {this.state.data ?
-        <View style={styles.questions}>
-          {/* <FlatList
-            data={this.state.data}
-            keyExtractor={item => item.text}
-            renderItem={item =>this.renderQuestion(item)}
-          /> */}
-          <SlidingList data={this.state.data} />
-
-          
-        </View>
-        : <ActivityIndicator />}
+          <View style={styles.questions}>
+            <SlidingList data={this.state.data} onScoreChange={this.setScore}/>
+          </View>
+          : <ActivityIndicator />
+        }
       </View>
     );
   }
@@ -94,6 +89,7 @@ const styles = StyleSheet.create({
     flex: 1
   },
   questions: {
+    backgroundColor: '#F5FCFF',
     flex:4,
     
   },
