@@ -8,13 +8,14 @@ import {
   View,
   Dimensions,
   Platform,
+  AsyncStorage
 } from 'react-native';
 import SortableList from 'react-native-sortable-list';
 
 const window = Dimensions.get('window');
 
 export default class SlidingList extends Component {
-    state={ next:[] }
+    state={ next:['0','1','2'] }
 
     onReorder(next) {
         this.setState({next})
@@ -22,7 +23,7 @@ export default class SlidingList extends Component {
         this.props.data.forEach(d => {
             anno.push(d.number)
         })
-        console.warn(next,anno)
+        // console.warn(next,anno)
     }
 
     onAnswer(){
@@ -39,16 +40,38 @@ export default class SlidingList extends Component {
         if(reOrderedYears[0]<reOrderedYears[1]&&reOrderedYears[1]<reOrderedYears[2]){
             const answer = 'Correct!!!'
             this.setState({answer})
+
+            let score
+            _storeData = async () => {
+              try {
+                score = await AsyncStorage.getItem('score')
+                if(score === null) {
+                  await AsyncStorage.setItem('score','1')
+                  this.props.onScoreChange('1')
+                } else {
+                  score = parseInt(score)+1
+                  this.props.onScoreChange(score.toString())
+                  await AsyncStorage.setItem('score', score.toString())
+                }
+                
+              }catch(error){ console.log('error setting win') }
+            }
+            _storeData()
         } else {
             const answer = 'False'
             this.setState({answer})
+            this.props.onScoreChange('0')
+            try {
+              AsyncStorage.setItem('score','0')
+            } catch(error) { console.log('error setting win') }
         }
-        
     }
 
     render() {
+
       return (
         <View style={styles.container}>
+          {/* <Text>{AsyncStorage.getItem('score')}</Text> */}
             <SortableList
                 style={styles.list}
                 contentContainerStyle={styles.contentContainer}
