@@ -28,10 +28,10 @@ export default class App extends Component {
     const day = date.getUTCDate()
     const month = date.getUTCMonth()+1
     const year = date.getUTCYear()
-    let url, url1
+    let url
 
-    url1 = `http://numbersapi.com/${month}/${day}/date?json`
-    url = `http://numbersapi.com/`
+    url = `http://numbersapi.com/${month}/${day}/date?json`
+  
     
     if(url){
       fetch(url)
