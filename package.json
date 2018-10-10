@@ -7,9 +7,10 @@
     "test": "jest"
   },
   "dependencies": {
+    "@babel/core": "7.1.2",
     "react": "16.5.0",
     "react-native": "0.57.2",
-    "@babel/core": "7.1.2"
+    "react-navigation": "^2.17.0"
   },
   "devDependencies": {
     "babel-jest": "23.6.0",
