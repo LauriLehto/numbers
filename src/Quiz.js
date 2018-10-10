@@ -8,7 +8,9 @@
 import React, {Component} from 'react';
 import { StyleSheet, Text, Button, View, ActivityIndicator, FlatList } from 'react-native';
 
-export default class App extends Component {
+import SlidingList from './components/SlidingList'
+
+export default class Quiz extends Component {
   static navigationOptions = {
     title :'History Quiz'
   }
@@ -57,9 +59,6 @@ export default class App extends Component {
     
     return <Text style={styles.slider}>{newText}{year}</Text>
    }
-   onSubmit() {
-
-   }
 
   render() {
     return (
@@ -69,17 +68,16 @@ export default class App extends Component {
         </View>
         {this.state.data ?
         <View style={styles.questions}>
-          <FlatList
+          {/* <FlatList
             data={this.state.data}
             keyExtractor={item => item.text}
             renderItem={item =>this.renderQuestion(item)}
-          />
+          /> */}
+          <SlidingList data={this.state.data} />
+
           
         </View>
         : <ActivityIndicator />}
-        <View style={styles.footer}>
-          <Button color='grey' title='Submit' onPress={() => this.onSubmit}/>
-        </View>
       </View>
     );
   }
@@ -90,13 +88,13 @@ const styles = StyleSheet.create({
     flex: 1,
     justifyContent: 'center',
     alignItems: 'center',
-    backgroundColor: '#F5FCFF',
+    backgroundColor: 'white',
   },
   header:{
     flex: 1
   },
   questions: {
-    flex:2,
+    flex:4,
     
   },
   footer:{
