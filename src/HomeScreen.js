@@ -13,7 +13,7 @@ class HomeScreen extends Component {
                     <Text>Random Text</Text>
                 </TouchableOpacity>
                 <TouchableOpacity onPress={()=>{this.props.navigation.navigate('Question')}}>
-                    <Text>Question</Text>
+                    <Text>History Quiz</Text>
                 </TouchableOpacity>
             </View>
         )

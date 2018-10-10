@@ -6,14 +6,16 @@
  */
 
 import React, {Component} from 'react';
-import { StyleSheet, Text, View, ActivityIndicator, FlatList } from 'react-native';
+import { StyleSheet, Text, Button, View, ActivityIndicator, FlatList } from 'react-native';
 
 export default class App extends Component {
+  static navigationOptions = {
+    title :'History Quiz'
+  }
   state= {
     data:[],
     date:9,
-    month:10,
-    done: false
+    month:10
   }
 
   resToState() {
@@ -21,7 +23,7 @@ export default class App extends Component {
     const url = `http://numbersapi.com/random/year?json`
     let i = 3
 
-    let intFetch = setInterval(()=>{
+    while(i){
       if(url){
         fetch(url)
         .then(response => response.json())
@@ -29,16 +31,12 @@ export default class App extends Component {
         .then(json => {
           this.setState(prev=>{
           const data = prev.data.concat(json)
-          return { data: data, date: this.state.date, month: this.state.month, done:false }
+          return { data: data, date: this.state.date, month: this.state.month }
         })})
         .catch(err => console.warn('json not loaded'+err))
       }
       i--
-      if(!i){
-        this.setState({ done: true })
-        clearInterval(intFetch)
-      }
-    },1000)
+    }
     
   }
 
@@ -47,18 +45,41 @@ export default class App extends Component {
   }
 
   renderQuestion({item}) {
-       return <Text style={styles.text}>{item.text}</Text>
+    const { text, number } = item
+    const array = text.split('is the year that')
+    const year = array[0]
+    let newText = array[1].trim()
+
+    if(newText.indexOf('(')){
+      newText=newText.split('(')[0]
+    }
+    newText= newText.charAt(0).toUpperCase()+newText.substr(1)
+    
+    return <Text style={styles.slider}>{newText}{year}</Text>
+   }
+   onSubmit() {
+
    }
 
   render() {
     return (
       <View style={styles.container}>
-        <FlatList
-        data={this.state.data}
-        keyExtractor={item => item.text}
-        renderItem={item =>this.renderQuestion(item)}
-        />
-      <Text>Tekstiä</Text>
+        <View style={styles.header}>
+          <Text style={styles.text}>Organize three world events in the right order</Text>
+        </View>
+        {this.state.data ?
+        <View style={styles.questions}>
+          <FlatList
+            data={this.state.data}
+            keyExtractor={item => item.text}
+            renderItem={item =>this.renderQuestion(item)}
+          />
+          
+        </View>
+        : <ActivityIndicator />}
+        <View style={styles.footer}>
+          <Button color='grey' title='Submit' onPress={() => this.onSubmit}/>
+        </View>
       </View>
     );
   }
@@ -71,10 +92,35 @@ const styles = StyleSheet.create({
     alignItems: 'center',
     backgroundColor: '#F5FCFF',
   },
+  header:{
+    flex: 1
+  },
+  questions: {
+    flex:2,
+    
+  },
+  footer:{
+    flex: 1
+  },
+  slider:{
+    paddingLeft:10,
+    paddingRight: 10,
+    backgroundColor: 'white',
+    fontSize: 20,
+    textAlign: 'center',
+    borderRadius: 5,
+    borderColor: 'lightgrey',
+    borderStyle: 'solid',
+    borderWidth: 2
+  },
   text: {
     fontSize: 20,
     textAlign: 'center',
     margin: 10,
   },
+  button: {
+    backgroundColor: '#ff0000',
+    color: 'black'
+  }
   
 });
