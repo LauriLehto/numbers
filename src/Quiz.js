@@ -1,10 +1,3 @@
-/**
- * Sample React Native App
- * https://github.com/facebook/react-native
- *
- * @format
- */
-
 import React, {Component} from 'react';
 import { StyleSheet, Text, Button, View, ActivityIndicator, FlatList } from 'react-native';
 
@@ -21,7 +14,6 @@ export default class Quiz extends Component {
   }
 
   resToState() {
-    
     const url = `http://numbersapi.com/random/year?json`
     let i = 3
 
