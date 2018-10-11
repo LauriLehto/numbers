@@ -17,8 +17,15 @@ class HomeScreen extends Component {
 
   render() {
     const { toggled } = this.state;
+    const themetext = {
+      color: toggled ? "#F5FCFF" : "#114511"
+    };
+    const themebg = {
+      backgroundColor: toggled ? "#114511" : "#F5FCFF"
+    };
+
     return (
-      <View style={toggled ? styles.containerGreen : styles.containerWhite}>
+      <View style={[styles.container, themebg]}>
         <Image
           source={
             toggled
@@ -29,30 +36,30 @@ class HomeScreen extends Component {
         />
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate("RandomFact");
+            this.props.navigation.navigate("RandomFact", {
+              toggled: this.state.toggled
+            });
           }}
         >
-          <Text style={toggled ? styles.textWhite : styles.textGreen}>
-            Random Text
-          </Text>
+          <Text style={[styles.text, themetext]}>Random Text</Text>
         </TouchableOpacity>
         <TouchableOpacity
           onPress={() => {
-            this.props.navigation.navigate("FavNumber");
+            this.props.navigation.navigate("FavNumber", {
+              toggled: this.state.toggled
+            });
           }}
         >
-          <Text style={toggled ? styles.textWhite : styles.textGreen}>
-            Favorite Number
-          </Text>
+          <Text style={[styles.text, themetext]}>Favorite Number</Text>
         </TouchableOpacity>
-        <TouchableOpacity 
-          onPress={()=>{
-            this.props.navigation.navigate('Quiz')
+        <TouchableOpacity
+          onPress={() => {
+            this.props.navigation.navigate("Quiz", {
+              toggled: this.state.toggled
+            });
           }}
         >
-          <Text style={toggled ? styles.textWhite : styles.textGreen}>
-            History Quiz
-          </Text>
+          <Text style={[styles.text, themetext]}>History Quiz</Text>
         </TouchableOpacity>
         <Switch
           trackColor={{ false: "#114511", true: "#F5FCFF" }}
@@ -65,37 +72,21 @@ class HomeScreen extends Component {
 }
 
 const styles = StyleSheet.create({
-  containerGreen: {
+  container: {
     flex: 1,
     alignSelf: "stretch",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "#114511"
-  },
-  containerWhite: {
-    flex: 1,
-    alignSelf: "stretch",
-    justifyContent: "flex-start",
-    alignItems: "center",
-    backgroundColor: "#F5FCFF"
+    justifyContent: "center",
+    alignItems: "center"
   },
   logo: {
     height: 135,
     width: 166,
-    marginTop: 30,
-    marginBottom: 30
-  },
-  textWhite: {
-    alignSelf: "stretch",
-    fontSize: 30,
-    color: "#F5FCFF",
-    textAlign: "left",
+    marginTop: 20,
     marginBottom: 20
   },
-  textGreen: {
+  text: {
     alignSelf: "stretch",
     fontSize: 30,
-    color: "#114511",
     textAlign: "left",
     marginBottom: 20
   }
