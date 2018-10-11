@@ -1,5 +1,11 @@
 import React, { Component } from "react";
-import { Button, StyleSheet, Text, View, TextInput } from "react-native";
+import {
+  TouchableHighlight,
+  StyleSheet,
+  Text,
+  View,
+  TextInput
+} from "react-native";
 import { AsyncStorage } from "react-native";
 
 export default class Favnumber extends Component {
@@ -30,19 +36,15 @@ export default class Favnumber extends Component {
   };
 
   getData = async () => {
-    console.warn("get");
-
     try {
       this.inputText = await AsyncStorage.getItem("favNumber");
       this.getTrivia(this.inputText);
     } catch (error) {
       // error
-      console.warn("err", error);
     }
   };
 
   storeData = async () => {
-    console.warn("store", this.inputText);
     try {
       await AsyncStorage.setItem("favNumber", this.inputText);
     } catch (error) {
@@ -63,31 +65,51 @@ export default class Favnumber extends Component {
   };
 
   render() {
+    const toggled = this.props.navigation.getParam("toggled");
+    const themetext = {
+      color: toggled ? "#F5FCFF" : "#114511"
+    };
+    const themeborder = {
+      borderBottomColor: toggled ? "#F5FCFF" : "#114511"
+    };
+    const themebg = {
+      backgroundColor: toggled ? "#114511" : "#F5FCFF"
+    };
+    const themebutton = {
+      backgroundColor: toggled ? "#F5FCFF" : "#114511",
+      color: toggled ? "#114511" : "#F5FCFF"
+    };
     return (
-      <View style={styles.container}>
+      <View style={[styles.container, themebg]}>
         <View style={styles.favnum}>
           {this.inputText ? (
-            <Text>Your favorite number is {this.inputText}</Text>
+            <Text style={[styles.text, themetext]}>
+              Your favorite number is {this.inputText}
+            </Text>
           ) : (
-            <Text>Set your favorite number</Text>
+            <Text style={[styles.text, themetext]}>
+              Set your favorite number
+            </Text>
           )}
         </View>
-        <View style={styles.inputContainer}>
+        <View style={[styles.inputContainer, themebg]}>
           <TextInput
             onChangeText={this.onChangeInput}
-            placeholder={"Enter a number"}
-            style={styles.input}
+            placeholder="put a number"
+            style={[styles.input, themeborder, themetext]}
           />
-          <Button
+          <TouchableHighlight
             onPress={this.onPress}
-            title={this.inputText ? "Update Number" : "Save Number"}
-          />
+            style={[styles.button, themebutton]}
+          >
+            <Text style={[styles.button, themebutton]}>SAVE</Text>
+          </TouchableHighlight>
         </View>
 
         {this.state.trivia ? (
           <View style={styles.info}>
-            <Text style={styles.number}>{this.inputText}</Text>
-            <Text style={styles.text} numberOfLines={5}>
+            <Text style={[styles.number, themetext]}>{this.inputText}</Text>
+            <Text style={[styles.text, themetext]} numberOfLines={5}>
               {this.state.trivia}
             </Text>
           </View>
@@ -106,25 +128,37 @@ const styles = StyleSheet.create({
     backgroundColor: "#F5FCFF"
   },
   inputContainer: {
-    alignSelf: "center",
+    flexDirection: "row",
+    alignSelf: "stretch",
+    justifyContent: "center",
     backgroundColor: "#F5FCFF"
+  },
+  favnum: {
+    width: 300,
+    height: 100,
+    padding: 20,
+    justifyContent: "center",
+    alignItems: "center"
   },
   number: {
     fontSize: 30,
-    color: "#F5FCFF",
     alignSelf: "center"
   },
   info: {
     width: 300,
-    height: 300,
-    backgroundColor: "#114511",
-    borderRadius: 10,
-    padding: 10
+    height: 300
   },
   input: {
-    backgroundColor: "white"
+    width: 100,
+    borderBottomWidth: 1,
+    padding: 5,
+    marginRight: 20
   },
   text: {
-    color: "#F5FCFF"
+    fontSize: 20
+  },
+  button: {
+    borderRadius: 5,
+    padding: 5
   }
 });
