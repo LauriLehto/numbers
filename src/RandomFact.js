@@ -3,7 +3,7 @@ import { StyleSheet, Text, View, ActivityIndicator } from "react-native";
 
 class RandomFact extends Component {
   static navigationOptions = {
-    title: "Random Fact - Today"
+    title: "Fact Of The Day"
   };
   state = {
     data: {},

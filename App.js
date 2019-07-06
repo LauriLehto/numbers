@@ -1,11 +1,13 @@
-import { createStackNavigator } from "react-navigation";
+import { createeAppContainer, createStackNavigator, createAppContainer } from "react-navigation";
 
 import RandomFact from "./src/RandomFact";
 import HomeScreen from "./src/HomeScreen";
 import FavNumber from "./src/FavNumber";
 import Quiz from "./src/Quiz";
 
-export default (App = createStackNavigator(
+
+
+const AppNavigator = createStackNavigator(
   {
     Home: HomeScreen,
     RandomFact: RandomFact,
@@ -15,4 +17,7 @@ export default (App = createStackNavigator(
   {
     initialRouteName: "Home"
   }
-));
+)
+const App = createAppContainer(AppNavigator)
+
+export default App
