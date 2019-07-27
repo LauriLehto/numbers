@@ -1,4 +1,4 @@
-import { createeAppContainer, createStackNavigator, createAppContainer } from "react-navigation";
+import { createStackNavigator, createAppContainer } from "react-navigation";
 
 import RandomFact from "./src/RandomFact";
 import HomeScreen from "./src/HomeScreen";

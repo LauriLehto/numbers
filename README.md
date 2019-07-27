@@ -1,5 +1,5 @@
-# numbers-expo
-This is a copy of numbers repo for use with expo
-## This repo is for demoing the app in expo
-For use with Expo App
+# numbers
+This is a project executed by three coders during Code In The Woods 2018.
+## You can try this app with expo client
+Link code for Expo App
 ![Numbers](./assets/numbers-expo.png)
